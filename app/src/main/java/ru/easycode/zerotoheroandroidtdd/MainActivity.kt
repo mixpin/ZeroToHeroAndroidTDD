@@ -24,28 +24,27 @@ class MainActivity : AppCompatActivity() {
             button.isEnabled = false
         }
 
+        if (savedInstanceState != null) {
+            val isTextViewRemoved = savedInstanceState.getBoolean(KEY_REMOVE_TEXT_VIEW, false)
+            val isButtonDisabled = savedInstanceState.getBoolean(KEY_BUTTON_ENABLED, false)
+
+            if (isTextViewRemoved) {
+                linearLayout.removeView(textView)
+            }
+
+            button.isEnabled = !isButtonDisabled
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val removeTextView = linearLayout.childCount == 1
-        val disableButton = button.isEnabled
-        outState.putBoolean(KEY, removeTextView)
-        outState.putBoolean(KEY2, disableButton)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val removeTextView = savedInstanceState.getBoolean(KEY)
-        if (removeTextView)
-            linearLayout.removeView(textView)
-        val disableButton  = button.isEnabled
-        if (disableButton)
-            button.isEnabled = false
+        val isTextViewRemoved = textView.parent == null
+        outState.putBoolean(KEY_REMOVE_TEXT_VIEW, isTextViewRemoved)
+        outState.putBoolean(KEY_BUTTON_ENABLED, !button.isEnabled)
     }
 
     companion object {
-        private const val KEY = "key"
-        private const val KEY2 = "key2"
+        private const val KEY_REMOVE_TEXT_VIEW = "remove_text_view"
+        private const val KEY_BUTTON_ENABLED = "button_enabled"
     }
 }
