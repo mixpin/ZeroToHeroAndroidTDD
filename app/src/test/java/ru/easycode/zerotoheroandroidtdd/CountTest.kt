@@ -48,7 +48,7 @@ class CountTest {
         try {
             Count.Base(step = -2)
         } catch (e: Exception) {
-            assertEquals("step should be positive, but was -2", e.message)
+            assertEquals("step shoud be positive, but was -2", e.message)
         }
     }
 }
